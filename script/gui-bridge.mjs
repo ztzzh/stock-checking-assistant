@@ -1,0 +1,10 @@
+import './desktop-runtime.mjs';
+import {format} from 'node:util';
+import {main,ROOT} from './screen.mjs';
+import {serveGUI} from './gui-protocol.mjs';
+import {recoverSavedBatch} from './recover-batch.mjs';
+const write=process.stdout.write.bind(process.stdout),emit=event=>write(JSON.stringify(event)+'\n');
+console.log=(...args)=>emit({type:'log',message:format(...args)});
+console.error=(...args)=>emit({type:'log',message:format(...args),level:'error'});
+await serveGUI({input:process.stdin,emit,run:main,root:ROOT,recover:recoverSavedBatch});
+process.stdin.destroy();

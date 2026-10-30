@@ -1,0 +1,14 @@
+node_modules/
+runtime/
+dist/
+.audit/
+gui/build/
+.script-browser/
+脚本结果/
+历史缓存/
+运行记录/
+*.log
+.env
+.env.*
+!.env.example
+__pycache__/
