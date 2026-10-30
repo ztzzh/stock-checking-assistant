@@ -66,6 +66,15 @@ test('符合图只以股票名命名，名称清理后重名时加代码且不�
  const f=await fixture(t);f.run.items[0].name='重名/股';const second=f.run.items[1];Object.assign(second,{name:'重名:股',result:{status:'符合'},chartFile:'300002-15分钟.png',imageSHA256:sha});await fs.writeFile(path.join(f.source,second.chartFile),bytes);f.run.images.push({file:second.chartFile});
  const r=await archiveBatch(f.run,f.source,{desktopDir:f.desktopDir});assert.deepEqual((await fs.readdir(r.directory)).sort(),['其他','结果.csv','重名_股.png','重名_股_300002.png'].sort());assert.equal(r.quickView.stocks.length,2);
 });
+
+test('Windows目录别名及短路径等价根目录可正常整理归档',{skip:process.platform!=='win32'},async t=>{
+ const f=await fixture(t),alias=path.join(f.temp,'模拟短路径别名');await fs.symlink(f.desktopDir,alias,'junction');const r=await archiveBatch(f.run,f.source,{desktopDir:alias});assert.equal(r.status,'completed');assert.deepEqual(await fs.readFile(path.join(r.directory,'合成通过.png')),bytes);
+});
+
+test('真实路径校验仍拒绝任务子目录联接到归档外，不移动原始文件',{skip:process.platform!=='win32'},async t=>{
+ const f=await fixture(t),stockRoot=path.join(f.desktopDir,'股票'),dir=path.join(stockRoot,'旧归档'),outside=path.join(f.temp,'任务外部'),image=f.run.items[0].chartFile;await fs.mkdir(path.join(dir,'符合'),{recursive:true});await fs.mkdir(outside);await fs.writeFile(path.join(outside,image),bytes);await fs.symlink(outside,path.join(dir,'符合','联接'),'junction');
+ await fs.writeFile(path.join(dir,'归档清单.json'),JSON.stringify({directory:dir,batchId:f.run.id,files:[{source:image,file:'符合/联接/'+image,sha256:sha}]}));await assert.rejects(compactArchive(dir,f.run,{stockRoot}),/超出任务目录/);assert.equal(await fs.access(path.join(dir,'其他')).then(()=>true,()=>false),false);assert.deepEqual(await fs.readFile(path.join(outside,image)),bytes);
+});
 test('带路径的图片清单不能复制目录外文件，归档错误不污染筛选状态',async t=>{
  const f=await fixture(t);await fs.writeFile(path.join(f.temp,'private.png'),'never-copy');f.run.items[2].chartFile='../private.png';
  const r=await archiveBatch(f.run,f.source,{desktopDir:f.desktopDir});assert.equal(r.status,'partial');assert(r.warnings.some(w=>/文件名不安全/.test(w)));assert(!r.files.some(f=>f.source.includes('private')));

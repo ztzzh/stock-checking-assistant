@@ -14,7 +14,7 @@ export class LiveArchiveSession {
   if(this.manifest)return;
   const stockRoot=path.join(this.desktopDir||await desktopDirectory(),'股票'),names=archiveNames(run,{taskName:this.cfg['task-name']});
   let old;try{old=await readJSON(path.join(this.source,'桌面归档.json'));}catch(e){if(e.code!=='ENOENT')throw e;}
-  if(old?.archiveMode==='incremental'&&old.batchId===run.id&&path.resolve(old.sourceDirectory)===this.source){inside(stockRoot,old.directory);const real=await fs.realpath(old.directory);inside(stockRoot,real);this.manifest=await readJSON(path.join(real,'其他','归档清单.json'));if(this.manifest.batchId!==run.id||path.resolve(this.manifest.sourceDirectory)!==this.source)throw Error('增量归档身份不符');return;}
+  if(old?.archiveMode==='incremental'&&old.batchId===run.id&&path.resolve(old.sourceDirectory)===this.source){inside(stockRoot,old.directory);const real=await fs.realpath(old.directory),realStockRoot=await fs.realpath(stockRoot);inside(realStockRoot,real);this.manifest=await readJSON(path.join(real,'其他','归档清单.json'));if(this.manifest.batchId!==run.id||path.resolve(this.manifest.sourceDirectory)!==this.source)throw Error('增量归档身份不符');return;}
   await fs.mkdir(path.join(stockRoot,names.date),{recursive:true});let directory;
   for(let n=1;n<1001;n++){directory=inside(stockRoot,path.join(stockRoot,names.date,names.task+(n===1?'':'_'+n)));try{await fs.mkdir(directory);break;}catch(e){if(e.code!=='EEXIST'||n===1000)throw e;}}
   await fs.mkdir(path.join(directory,'其他','原始记录'),{recursive:true});
