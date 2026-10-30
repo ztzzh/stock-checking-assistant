@@ -1,0 +1,21 @@
+{
+  "name": "stock-checking-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Windows desktop stock screenshot screening assistant",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "test": "node --test tests/script.test.mjs tests/period.test.mjs tests/history.test.mjs tests/sector-http.test.mjs tests/tencent-history.test.mjs tests/pending-recovery.test.mjs tests/specified-sectors.test.mjs tests/sources.test.mjs tests/archive.test.mjs tests/gui.test.mjs tests/state-files.test.mjs tests/vision-engines.test.mjs tests/member-percent.test.mjs tests/pipeline.test.mjs tests/economy.test.mjs tests/main-chart.test.mjs tests/review-queue.test.mjs tests/review-workers.test.mjs tests/capture-pool.test.mjs tests/qwen.test.mjs",
+    "test:script": "node --test tests/script.test.mjs tests/period.test.mjs tests/history.test.mjs tests/sector-http.test.mjs tests/tencent-history.test.mjs tests/pending-recovery.test.mjs tests/specified-sectors.test.mjs tests/sources.test.mjs tests/archive.test.mjs tests/gui.test.mjs tests/state-files.test.mjs tests/vision-engines.test.mjs tests/member-percent.test.mjs tests/pipeline.test.mjs tests/economy.test.mjs tests/main-chart.test.mjs tests/review-queue.test.mjs tests/review-workers.test.mjs tests/capture-pool.test.mjs tests/qwen.test.mjs",
+    "build:desktop": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File gui/构建.ps1",
+    "package:desktop": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/package-desktop.ps1",
+    "audit:release": "node tools/release-audit.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "file:vendor/playwright-core-1.62.1.tgz",
+    "westock-data-clawhub": "file:vendor/westock-data-clawhub-1.0.4.tgz"
+  }
+}

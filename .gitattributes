@@ -1,0 +1,6 @@
+* -text
+* whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+*.exe binary
+*.tgz binary
+*.png binary
+*.zip binary

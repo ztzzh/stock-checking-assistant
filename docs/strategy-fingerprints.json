@@ -1,0 +1,38 @@
+[
+  {
+    "file": "script/screen.mjs",
+    "sha256": "3f1077ef82c3b4c947641a158d36cab2b9c0ac74b091bbf7a0ff462d98ccba72"
+  },
+  {
+    "file": "script/vision.mjs",
+    "sha256": "e2ccf1838b8c62a6b579251101c3eab494f2cebc8c2f53f17afcb1ee56caaf21"
+  },
+  {
+    "file": "script/review-settings.mjs",
+    "sha256": "0dff690d0c429209f86f65c5b0ff7234ec5dc937bb988efd612223073e3b883d"
+  },
+  {
+    "file": "script/capture-pool.mjs",
+    "sha256": "491d378ecd3833d5f4cd77ba167b7db4ec2c98e144bb9f3ea372e4cf5fde5b2d"
+  },
+  {
+    "file": "script/review-queue.mjs",
+    "sha256": "49ccdd59dface7c2021c2b5ae9d73436ce0e25bb064cd331c69faea5a7d93328"
+  },
+  {
+    "file": "script/task-pause.mjs",
+    "sha256": "785805cd5c4cce57375beb352418e15045248c802bbe7b7fe5861b23bf464b49"
+  },
+  {
+    "file": "script/sina-browser.mjs",
+    "sha256": "3221d3032101f0633bff61e976b4d2ed3a7294b8ea9b29696a5d098331a4f8b3"
+  },
+  {
+    "file": "script/member-scope.mjs",
+    "sha256": "f1c48ad1e97bc6b3a02dd9389a274e00124bbf227a6c1b87c6cf5b5968325fb2"
+  },
+  {
+    "file": "extension/core.js",
+    "sha256": "fdcebd069dbe78fcf871ab7d92e41327bfd3073ec62c91ab7ec90cabf322dbd6"
+  }
+]

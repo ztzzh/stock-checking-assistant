@@ -1,0 +1,36 @@
+name: Desktop checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Install pinned local dependencies
+        run: npm ci --ignore-scripts --offline
+      - name: Test desktop backend
+        run: npm test
+      - name: Build desktop EXE
+        run: npm run build:desktop
+      - name: Audit desktop distribution scope
+        run: npm run audit:release
+      - name: Native UI and process checks
+        shell: pwsh
+        run: |
+          foreach ($scenario in @('self','fixture-task-pause','fixture-task-pause-stop','fixture-abnormal-exit')) {
+            $out=Join-Path $env:RUNNER_TEMP ('stock-check-'+$scenario)
+            New-Item -ItemType Directory -Path $out -Force | Out-Null
+            $arguments=if($scenario -eq 'self'){@('--self-test',('"'+$out+'"'))}else{@('--integration-test',('"'+$out+'"'),$scenario)}
+            $p=Start-Process -FilePath (Join-Path $pwd '股票筛选.exe') -ArgumentList $arguments -WindowStyle Hidden -PassThru -Wait
+            if($p.ExitCode -ne 0){throw ('Desktop check failed: '+$scenario)}
+          }

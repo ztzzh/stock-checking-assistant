@@ -1,0 +1,10 @@
+[
+  {
+    "file": "vendor/playwright-core-1.62.1.tgz",
+    "sha256": "d6f0bdc3311d5c10d9236f1081ace7eea45b941353b80e29275abe9e5af165f7"
+  },
+  {
+    "file": "vendor/westock-data-clawhub-1.0.4.tgz",
+    "sha256": "ecf718ba66afd9c7157296c201f391c2e45512f882794f1d74ac73fa654d07ef"
+  }
+]
